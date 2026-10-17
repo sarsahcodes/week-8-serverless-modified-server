@@ -7,6 +7,6 @@ architecture = "x86_64"
 handler = "pre_signup.handler"
 manifest_hash = "973ca4d5ac70e11249367d379abacc46"
 packagetype = "Zip"
-functions = ["PreSignUpFunction", "PostAuthFunction"]
+functions = ["PreSignUpFunction", "PostAuthFunction", "TasksApiFunction", "ExpireTaskFunction", "StreamToQueueFunction", "CancelExpiryFunction"]
 
 [layer_build_definitions]

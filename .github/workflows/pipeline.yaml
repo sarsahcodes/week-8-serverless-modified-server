@@ -110,9 +110,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Integration tests
+      - uses: aws-actions/setup-sam@v2
+        with:
+          use-installer: true
+
+      - name: Assume the testing pipeline user role
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-region: ${{ env.TESTING_REGION }}
+          role-to-assume: ${{ env.TESTING_PIPELINE_EXECUTION_ROLE }}
+          role-session-name: testing-integration
+          role-duration-seconds: 900
+          role-skip-session-tagging: true
+
+      - name: Smoke test - the API rejects requests without a Cognito token
         run: |
-          echo "Smoke test added in Phase 3, once the stack has an API."
+          API_URL=$(sam list stack-outputs --config-file ${PIPELINE_CONFIG} --config-env dev --output json \
+            | jq -r '.[] | select(.OutputKey=="ApiUrl") | .OutputValue')
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "${API_URL}/tasks")
+          echo "GET ${API_URL}/tasks without a token -> HTTP ${STATUS}"
+          test "${STATUS}" = "401"
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
