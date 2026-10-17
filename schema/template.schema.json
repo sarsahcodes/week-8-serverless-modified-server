@@ -1,0 +1,26 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "SAM template with AWS::LanguageExtensions",
+  "description": "Editor-only schema for template.yaml. The default CloudFormation/SAM schema does not know Fn::ToJsonString (AWS::LanguageExtensions) and reports false errors. Real validation: sam validate --lint.",
+  "type": "object",
+  "required": ["Resources"],
+  "properties": {
+    "AWSTemplateFormatVersion": { "type": "string" },
+    "Transform": { "type": ["string", "array"] },
+    "Description": { "type": "string" },
+    "Parameters": { "type": "object" },
+    "Conditions": { "type": "object" },
+    "Globals": { "type": "object" },
+    "Resources": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": ["Type"],
+        "properties": {
+          "Type": { "type": "string" }
+        }
+      }
+    },
+    "Outputs": { "type": "object" }
+  }
+}
