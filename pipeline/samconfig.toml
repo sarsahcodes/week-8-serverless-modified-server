@@ -44,7 +44,7 @@ template_file = "packaged-prod.yaml"
 s3_bucket = "aws-sam-cli-managed-prod-pipeline--artifactsbucket-qmg7ksgznzm1"
 role_arn = "arn:aws:iam::904233109505:role/aws-sam-cli-managed-prod--CloudFormationExecutionRo-FKJWGkv5Ydcp"
 capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
-# Amplify phase: add  FrontendRepoUrl=https://github.com/sarsahcodes/week-8-serverless-modified-client
-parameter_overrides = "Stage=prod"
+# FrontendRepoUrl turns on Amplify Hosting for the client repo (GitHub token from Secrets Manager: todo/github-token)
+parameter_overrides = "Stage=prod FrontendRepoUrl=https://github.com/sarsahcodes/week-8-serverless-modified-client"
 confirm_changeset = false
 fail_on_empty_changeset = false
