@@ -3,7 +3,7 @@
 version = 0.1
 
 [default.global.parameters]
-stack_name = "week-8-serverless-modified-server"
+stack_name = "serverless-todo-dev"
 region = "eu-central-1"
 
 [default.build.parameters]
