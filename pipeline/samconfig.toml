@@ -1,0 +1,50 @@
+# SAM CLI settings for the CI/CD pipeline (.github/workflows/pipeline.yaml).
+#
+# Every `sam package` / `sam deploy` flag for each stage lives here, so the
+# workflow only runs:
+#   sam package --config-file pipeline/samconfig.toml --config-env dev
+#   sam deploy  --config-file pipeline/samconfig.toml --config-env dev
+#
+# Role ARNs and buckets come from `sam pipeline bootstrap` (.aws-sam/pipeline/pipelineconfig.toml).
+version = 0.1
+
+# =============================================================================
+# dev (testing stage)
+# =============================================================================
+[dev.global.parameters]
+stack_name = "serverless-todo-dev"
+region = "eu-central-1"
+
+[dev.package.parameters]
+s3_bucket = "aws-sam-cli-managed-dev-pipeline-r-artifactsbucket-yoc5btuopoai"
+output_template_file = "packaged-testing.yaml"
+
+[dev.deploy.parameters]
+template_file = "packaged-testing.yaml"
+s3_bucket = "aws-sam-cli-managed-dev-pipeline-r-artifactsbucket-yoc5btuopoai"
+role_arn = "arn:aws:iam::904233109505:role/aws-sam-cli-managed-dev-p-CloudFormationExecutionRo-clLDMGfjRRbb"
+capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
+parameter_overrides = "Stage=dev"
+confirm_changeset = false
+fail_on_empty_changeset = false
+
+# =============================================================================
+# prod (production stage)
+# =============================================================================
+[prod.global.parameters]
+stack_name = "serverless-todo-prod"
+region = "eu-central-1"
+
+[prod.package.parameters]
+s3_bucket = "aws-sam-cli-managed-prod-pipeline--artifactsbucket-qmg7ksgznzm1"
+output_template_file = "packaged-prod.yaml"
+
+[prod.deploy.parameters]
+template_file = "packaged-prod.yaml"
+s3_bucket = "aws-sam-cli-managed-prod-pipeline--artifactsbucket-qmg7ksgznzm1"
+role_arn = "arn:aws:iam::904233109505:role/aws-sam-cli-managed-prod--CloudFormationExecutionRo-FKJWGkv5Ydcp"
+capabilities = "CAPABILITY_IAM CAPABILITY_AUTO_EXPAND"
+# Amplify phase: add  FrontendRepoUrl=https://github.com/sarsahcodes/week-8-serverless-modified-client
+parameter_overrides = "Stage=prod"
+confirm_changeset = false
+fail_on_empty_changeset = false
